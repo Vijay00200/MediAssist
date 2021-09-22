@@ -1,0 +1,16 @@
+.loading-spinner {
+  background-color: #0000001f;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+}
+
+.loading-message {
+  text-align: center;
+  align-self: start;
+}

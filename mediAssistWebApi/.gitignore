@@ -1,0 +1,11 @@
+#Ignore bin
+/bin
+
+#Ignore obj
+/obj
+
+#Ignore publish
+/Publish
+
+#Ignore appsetting
+appsettings.json

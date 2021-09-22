@@ -1,0 +1,34 @@
+<ng-container [formGroup]="form">
+  <mat-select class="select" formControlName="scope" (selectionChange)="clearInput()">
+    <mat-option *ngFor="let option of searchByOptions" [value]="option.key">{{
+      option.value
+    }}</mat-option>
+  </mat-select>
+  <mat-divider [vertical]="true" class="divider"></mat-divider>
+  <input
+    type="text"
+    matInput
+    formControlName="query"
+    class="input"
+    [matAutocomplete]="auto"
+    [placeholder]="placeholder"
+  />
+  <button
+    *ngIf="this.form.controls['query'].value"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="clearInput()"
+  >
+    <mat-icon class="color-red">close</mat-icon>
+  </button>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="optionSelected($event.option)"
+  >
+    <mat-option *ngFor="let option of filteredItems | async" [value]="option">
+      {{ option.value }}
+    </mat-option>
+  </mat-autocomplete>
+</ng-container>

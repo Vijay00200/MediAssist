@@ -1,0 +1,44 @@
+<div class="app-header">
+  <mat-toolbar class="app-navbar" color="primary">
+    <button
+      mat-icon-button
+      (click)="snav.toggle()"
+      *ngIf="viewMenuButton()"
+      class="navbar-button-icon"
+      aria-label="icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <img src="../assets/logo1.png" alt="Medi Assist" height="40px" />
+    <span class="navbar-spacer"></span>
+    <button
+      mat-icon-button
+      (click)="logOut()"
+      *ngIf="viewMenuButton()"
+      class="navbar-button-icon"
+      aria-label="icon-button with menu icon"
+    >
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="app-sidenav-container">
+    <mat-sidenav #snav mode="over" class="app-sidenav">
+      <mat-nav-list>
+        <mat-list-item *ngFor="let nav of appNav">
+          <mat-icon>{{ nav.menuIcon }}</mat-icon>
+          <a
+            mat-list-item
+            (click)="snav.toggle()"
+            [routerLink]="nav.routerLink"
+            [queryParams]="nav.queryParams"
+            >{{ nav.menuLabel }}</a
+          >
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="app-sidenav-content container">
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

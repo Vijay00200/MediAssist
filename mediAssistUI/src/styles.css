@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.background-color-green {
+  background-color: #31bd73 !important;
+}
+
+.color-green {
+  color: #31bd73 !important;
+}
+
+.color-red {
+  color: #f44336 !important;
+}
+
+.successMsg {
+  color: white !important;
+  background-color: #31bd73 !important;
+  border: none;
+}
+
+.errorMsg {
+  color: white !important;
+  background-color: #f44336 !important;
+  border: none;
+}
+
+mat-card-header {
+  justify-content: center;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+mat-card-actions button {
+  margin: 0 10px;
+}
+
+.entry__form {
+  margin-top: 2vh;
+}
+
+
+@media (min-width: 1200px){
+  .entry__form {
+  margin-right:200px;
+  margin-left:200px;
+  }
+}

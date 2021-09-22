@@ -1,0 +1,10 @@
+{
+    "/api": {
+      "target": "https://mediassistapi.vksolutions.site",
+      "secure": false,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  }

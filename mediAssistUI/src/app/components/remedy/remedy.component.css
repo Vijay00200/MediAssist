@@ -1,0 +1,30 @@
+/* .example-full-width {
+  width: 100%;
+} */
+
+.divContainer {
+  margin: 25px 0px 10px 0px;
+  padding: 20px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.54);
+  position: relative;
+}
+
+.lblHeaderName {
+  background-color: white;
+  text-align: center;
+  font-size: 16px;
+  position: absolute;
+  top: -13px;
+  float: left;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: 400;
+}
+
+mat-card-actions {
+  display: flex;
+}
+
+mat-card-actions > button {
+  margin-left: 2px;
+  margin-right: 2px;
+}

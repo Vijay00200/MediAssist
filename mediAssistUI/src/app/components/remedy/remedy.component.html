@@ -1,0 +1,103 @@
+<mat-card class="entry__form">
+  <mat-card-header>
+    <mat-card-title>{{ formState | titlecase }} Remedy Data</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="remedy-form" [formGroup]="form" autocomplete="off">
+      <mat-form-field style="width: 100%" class="form-row">
+        <mat-label>symptom</mat-label>
+        <app-mat-dictionary
+          formControlName="symptom"
+          [options]="SymptomOptions"
+          (addedOption)="onAddSymptomOption($event)"
+          [required]="true"
+          [disabled]="form.disabled"
+          placeholder="Start to type symptom Name"
+        ></app-mat-dictionary>
+      </mat-form-field>
+      <mat-form-field style="width: 100%" class="form-row">
+        <mat-label>Medicine</mat-label>
+        <app-mat-dictionary
+          formControlName="medicine"
+          [options]="medicineOptions"
+          (addedOption)="onAddMedicineOption($event)"
+          [required]="true"
+          placeholder="Start to type medicine Name"
+        ></app-mat-dictionary>
+      </mat-form-field>
+      <div formGroupName="dosage" class="divContainer">
+        <span class="lblHeaderName">Dosage</span>
+        <div class="row gx-2">
+          <mat-form-field class="col-md-4">
+            <mat-label>Power</mat-label>
+            <input matInput type="text" formControlName="dosagePower" />
+          </mat-form-field>
+          <mat-form-field class="col-md-4">
+            <mat-label>Days</mat-label>
+            <input matInput type="number" formControlName="dosageDays" />
+          </mat-form-field>
+          <mat-form-field class="col-md-4">
+            <mat-label>Times</mat-label>
+            <input matInput type="number" formControlName="dosageTimes" />
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-form-field style="width: 100%" class="form-row">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes" rows="3"></textarea>
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-flat-button
+      color="primary"
+      class="background-color-green"
+      (click)="onSaveClick()"
+      [disabled]="form.invalid"
+      *ngIf="formState === 'INSERT'"
+    >
+      Save
+    </button>
+    <button
+    mat-flat-button
+    color="primary"
+    (click)="onBackClick()"
+    *ngIf="formState === 'VIEW'"
+  >
+    Back
+  </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="onEditClick()"
+      *ngIf="formState === 'VIEW'"
+    >
+      Edit
+    </button>
+    <button
+      mat-flat-button
+      color="warn"
+      (click)="onDeleteClick()"
+      *ngIf="formState === 'VIEW'"
+    >
+      Delete
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="onUpdateClick()"
+      *ngIf="formState === 'UPDATE'"
+    >
+      Update
+    </button>
+    <button
+      mat-flat-button
+      color="warn"
+      (click)="onCancelClick()"
+      *ngIf="formState !== 'VIEW'"
+    >
+      Cancel
+    </button>
+  </mat-card-actions>
+</mat-card>

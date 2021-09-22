@@ -1,0 +1,414 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "mediAssistWebApi",
+      "version": "v1"
+    },
+    "paths": {
+      "/GetAllMedicines": {
+        "get": {
+          "tags": [
+            "Medicines"
+          ],
+          "operationId": "GetAllMedicines",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/GetMedicineById/{MedicineId}": {
+        "get": {
+          "tags": [
+            "Medicines"
+          ],
+          "operationId": "GetMedicineById",
+          "parameters": [
+            {
+              "name": "MedicineId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/AddMedicine": {
+        "post": {
+          "tags": [
+            "Medicines"
+          ],
+          "operationId": "AddMedicine",
+          "parameters": [
+            {
+              "name": "MedicineName",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/DeleteMedicine/{MedicineId}": {
+        "delete": {
+          "tags": [
+            "Medicines"
+          ],
+          "operationId": "DeleteMedicine",
+          "parameters": [
+            {
+              "name": "MedicineId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Remedies/GetRemedyById/{RemedyId}": {
+        "get": {
+          "tags": [
+            "Remedies"
+          ],
+          "operationId": "GetRemedyById",
+          "parameters": [
+            {
+              "name": "RemedyId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Remedies/SearchRemedies": {
+        "get": {
+          "tags": [
+            "Remedies"
+          ],
+          "operationId": "SearchRemedies",
+          "parameters": [
+            {
+              "name": "MedicineId",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            },
+            {
+              "name": "SymptomId",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            },
+            {
+              "name": "PageNumber",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            {
+              "name": "PageSize",
+              "in": "query",
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Remedies/AddRemedy": {
+        "post": {
+          "tags": [
+            "Remedies"
+          ],
+          "operationId": "AddRemedy",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddRemedyParams"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddRemedyParams"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddRemedyParams"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Remedies/DeleteRemedy/{RemedyId}": {
+        "delete": {
+          "tags": [
+            "Remedies"
+          ],
+          "operationId": "DeleteRemedy",
+          "parameters": [
+            {
+              "name": "RemedyId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Symptoms/GetAllSymptoms": {
+        "get": {
+          "tags": [
+            "Symptoms"
+          ],
+          "operationId": "GetAllSymptoms",
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Symptoms/GetSymptomById/{SymptomId}": {
+        "get": {
+          "tags": [
+            "Symptoms"
+          ],
+          "operationId": "GetSymptomById",
+          "parameters": [
+            {
+              "name": "SymptomId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Symptoms/AddSymptom": {
+        "post": {
+          "tags": [
+            "Symptoms"
+          ],
+          "operationId": "AddSymptom",
+          "parameters": [
+            {
+              "name": "value",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Symptoms/DeleteSymptom/{SymptomId}": {
+        "delete": {
+          "tags": [
+            "Symptoms"
+          ],
+          "operationId": "DeleteSymptom",
+          "parameters": [
+            {
+              "name": "SymptomId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/WeatherForecast": {
+        "get": {
+          "tags": [
+            "WeatherForecast"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeatherForecast"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeatherForecast"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WeatherForecast"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Dosage": {
+          "type": "object",
+          "properties": {
+            "power": {
+              "type": "string",
+              "nullable": true
+            },
+            "days": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "times": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "additionalProperties": false
+        },
+        "AddRemedyParams": {
+          "type": "object",
+          "properties": {
+            "symptom": {
+              "type": "string",
+              "nullable": true
+            },
+            "medicineId": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "symptomId": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "dosage": {
+              "$ref": "#/components/schemas/Dosage"
+            },
+            "notes": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "WeatherForecast": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "temperatureC": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "temperatureF": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "summary": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }

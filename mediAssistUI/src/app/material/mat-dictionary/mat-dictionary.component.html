@@ -1,0 +1,41 @@
+<ng-container [formGroup]="form">
+  <input
+    matInput
+    [placeholder]="placeholder"
+    aria-label="Item"
+    [matAutocomplete]="auto"
+    formControlName="itemCtrl"
+    (keyup.enter)="addOption()"
+  />
+  <button
+    *ngIf="value && !disabled"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="clearInput()"
+  >
+    <mat-icon class="color-red">close</mat-icon>
+  </button>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayFn"
+    (optionSelected)="optionSelected($event.option)"
+  >
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      <span>{{ item?.value }}</span>
+    </mat-option>
+  </mat-autocomplete>
+  <button
+    *ngIf="showAddButton && this.form.controls['itemCtrl'].value"
+    matSuffix
+    mat-button
+    mat-icon-button
+    (click)="addOption()"
+  >
+    <mat-icon
+      class="color-green"
+      matTooltip="Add &quot;{{ this.form.controls['itemCtrl'].value }}&quot;"
+      >add</mat-icon
+    >
+  </button>
+</ng-container>

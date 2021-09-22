@@ -1,0 +1,59 @@
+<mat-card class="entry__form">
+  <mat-card-header>
+    <mat-card-title>Search Remedy</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" class="search-form-field">
+      <div class="form-row">
+        <mat-form-field style="width: 90%">
+          <mat-label>Search</mat-label>
+          <app-mat-search
+            formControlName="search"
+            [searchByOptions]="searchByOptions"
+            [optionSets]="optionSets"
+            placeholder="Type to search......"
+          ></app-mat-search>
+        </mat-form-field>
+        <button mat-icon-button style="width: 10%" (click)="onSearchClick()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+    </form>
+    <mat-divider></mat-divider>
+    <mat-list *ngIf="remedies.length > 0">
+      <div mat-subheader>Search Result</div>
+      <mat-list-item *ngFor="let remedy of remedies">
+        <a
+          style="text-decoration: none"
+          mat-list-item
+          [routerLink]="['../remedy', remedy.remedyId]"
+        >
+          <div class="col-sm-2">
+            <img
+              class="serach_result_icon"
+              [src]="
+                getSearchedCondition().scope === 1
+                  ? '../../../assets/homeopathy.png'
+                  : '../../../assets/heart-disease.png'
+              "
+            />
+          </div>
+          <div class="col-sm-10" style="margin-left: 5px">
+            <div mat-line>
+              {{
+                getSearchedCondition().scope === 1
+                  ? remedy.medicine.value
+                  : remedy.symptom.value
+              }}
+            </div>
+            <div mat-line>
+              {{ remedy.dosage?.dosageDays }}
+              {{ remedy.dosage?.dosageTimes }}{{ remedy.dosage?.dosagePower }}
+            </div>
+          </div>
+        </a>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

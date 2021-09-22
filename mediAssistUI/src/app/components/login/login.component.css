@@ -1,0 +1,27 @@
+.login-form {
+  margin-top: 25vh;
+}
+
+.mat-title__h1 {
+  text-align: center;
+  /* font-weight: 500; */
+}
+
+mat-icon {
+  margin-right: 25vw;
+  color: #3f51b5;
+  font-size: 15vh;
+  top: -10vh;
+  position: relative;
+}
+
+mat-card-actions {
+  display: flex;
+}
+
+@media (min-width: 1200px){
+  .login-form {
+  margin-right:300px;
+  margin-left:300px;
+  }
+}
