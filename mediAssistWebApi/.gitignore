@@ -1,11 +1,11 @@
-#Ignore bin
+# Ignore bin
 /bin
 
-#Ignore obj
+# Ignore obj
 /obj
 
-#Ignore publish
+# Ignore publish
 /Publish
 
-#Ignore appsetting
+# Ignore appsetting
 appsettings.json
