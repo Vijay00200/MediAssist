@@ -9,3 +9,6 @@
 
 # Ignore appsetting
 appsettings.json
+
+# Ignore EF Migrations
+/Migrations

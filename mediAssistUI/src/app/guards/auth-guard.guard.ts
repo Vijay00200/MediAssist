@@ -7,8 +7,11 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
-  canActivate() {
-    if (this.authService.isAuthourized()) {
+
+  async canActivate() {
+    if (this.authService.getToken()) {
+      if (this.authService.isTokenExpired())
+        this.authService.tryRefreshingTokens().subscribe();
       return true;
     }
     this.router.navigate(['login']);

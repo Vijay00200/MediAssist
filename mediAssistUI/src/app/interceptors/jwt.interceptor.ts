@@ -44,7 +44,7 @@ export class JwtInterceptor implements HttpInterceptor {
         (err: any) => {
           if (err instanceof HttpErrorResponse) {
             this.removeRequest(request);
-            if (err.status === 401) {
+            if (err.status !== 401) {
               // redirect to the login route
               this.router.navigate(['login']);
               // or show a modal

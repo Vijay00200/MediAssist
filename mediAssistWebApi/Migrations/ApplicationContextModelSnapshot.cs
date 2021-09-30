@@ -54,6 +54,39 @@ namespace mediAssistWebApi.Migrations
                     b.ToTable("Dosages");
                 });
 
+            modelBuilder.Entity("mediassistwebapi.Entities.Models.LoginModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LoginModels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Password = "def@123",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserName = "johndoe"
+                        });
+                });
+
             modelBuilder.Entity("mediassistwebapi.Entities.Models.Medicine", b =>
                 {
                     b.Property<int>("MedicineId")

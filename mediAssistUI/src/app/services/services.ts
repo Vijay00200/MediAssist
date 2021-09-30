@@ -26,11 +26,11 @@ export class AuthClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    login(user: Login): Observable<FileResponse | null> {
+    login(loginModel: LoginModel): Observable<FileResponse | null> {
         let url_ = this.baseUrl + "/api/Auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(user);
+        const content_ = JSON.stringify(loginModel);
 
         let options_ : any = {
             body: content_,
@@ -836,11 +836,122 @@ export class SymptomsClient {
     }
 }
 
-export class Login implements ILogin {
+@Injectable()
+export class TokenClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    refresh(tokenApiModel: TokenApiModel): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Token/refresh";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(tokenApiModel);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRefresh(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRefresh(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse | null>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse | null>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRefresh(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse | null>(<any>null);
+    }
+
+    revoke(): Observable<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Token/revoke";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRevoke(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRevoke(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse | null>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse | null>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRevoke(response: HttpResponseBase): Observable<FileResponse | null> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse | null>(<any>null);
+    }
+}
+
+export class LoginModel implements ILoginModel {
+    id!: number;
     userName?: string | undefined;
     password?: string | undefined;
+    refreshToken?: string | undefined;
+    refreshTokenExpiryTime!: Date;
 
-    constructor(data?: ILogin) {
+    constructor(data?: ILoginModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -851,29 +962,38 @@ export class Login implements ILogin {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
             this.userName = _data["userName"];
             this.password = _data["password"];
+            this.refreshToken = _data["refreshToken"];
+            this.refreshTokenExpiryTime = _data["refreshTokenExpiryTime"] ? new Date(_data["refreshTokenExpiryTime"].toString()) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): Login {
+    static fromJS(data: any): LoginModel {
         data = typeof data === 'object' ? data : {};
-        let result = new Login();
+        let result = new LoginModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
         data["userName"] = this.userName;
         data["password"] = this.password;
+        data["refreshToken"] = this.refreshToken;
+        data["refreshTokenExpiryTime"] = this.refreshTokenExpiryTime ? this.refreshTokenExpiryTime.toISOString() : <any>undefined;
         return data; 
     }
 }
 
-export interface ILogin {
+export interface ILoginModel {
+    id: number;
     userName?: string | undefined;
     password?: string | undefined;
+    refreshToken?: string | undefined;
+    refreshTokenExpiryTime: Date;
 }
 
 export class MedicineDto implements IMedicineDto {
@@ -1106,6 +1226,46 @@ export class SymptomDto implements ISymptomDto {
 export interface ISymptomDto {
     symptomId: number;
     symptomName?: string | undefined;
+}
+
+export class TokenApiModel implements ITokenApiModel {
+    accessToken?: string | undefined;
+    refreshToken?: string | undefined;
+
+    constructor(data?: ITokenApiModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.accessToken = _data["accessToken"];
+            this.refreshToken = _data["refreshToken"];
+        }
+    }
+
+    static fromJS(data: any): TokenApiModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenApiModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["accessToken"] = this.accessToken;
+        data["refreshToken"] = this.refreshToken;
+        return data; 
+    }
+}
+
+export interface ITokenApiModel {
+    accessToken?: string | undefined;
+    refreshToken?: string | undefined;
 }
 
 export interface FileResponse {

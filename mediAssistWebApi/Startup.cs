@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using mediassistwebapi.Entities;
 using mediassistwebapi.Extensions;
+using mediassistwebapi.Contracts;
+using mediassistwebapi.Util;
 
 namespace mediAssistWebApi
 {
@@ -33,6 +35,8 @@ namespace mediAssistWebApi
             services.AddAutoMapper(typeof(Startup));
 
             services.ConfigureJWTAuthentication(Configuration);
+
+            services.AddTransient<ITokenService, TokenService>();
 
             services.AddControllers();
 

@@ -17,11 +17,11 @@ export class NavMenuComponent implements OnInit {
   }
   ngOnInit(): void {}
 
-  viewMenuButton(): boolean {
-    return this.auth.isAuthourized();
+  viewMenuButton() {
+    return !this.auth.isTokenExpired();
   }
 
-  logOut(){
+  logOut() {
     this.auth.logOut();
   }
 }

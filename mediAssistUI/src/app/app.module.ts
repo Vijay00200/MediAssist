@@ -55,6 +55,7 @@ export function tokenGetter() {
     ApiModule.SymptomsClient,
     ApiModule.RemediesClient,
     ApiModule.AuthClient,
+    ApiModule.TokenClient,
     AuthService,
     CommonService,
     SessionStorageService,

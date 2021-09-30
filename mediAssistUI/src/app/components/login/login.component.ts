@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiModule } from 'src/app/services/services';
 
@@ -19,9 +20,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authClient: ApiModule.AuthClient,
     private router: Router,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private authService: AuthService
   ) {
     this.form = this.fb.group({
       userName: new FormControl('', [Validators.required]),
@@ -33,11 +34,14 @@ export class LoginComponent implements OnInit {
 
   onLoginClick() {
     if (this.form.invalid) return;
-    this.authClient.login(this.form.value as ApiModule.Login).subscribe(
+    this.authService.login(this.form.value).subscribe(
       (response) => {
         response?.data.text().then((resp) => {
           const _resp = JSON.parse(resp);
-          localStorage.setItem('jwt', _resp.token);
+          this.authService.saveToken(
+            _resp.token as string,
+            _resp.refreshToken as string
+          );
           this.router.navigate(['/']);
         });
       },
