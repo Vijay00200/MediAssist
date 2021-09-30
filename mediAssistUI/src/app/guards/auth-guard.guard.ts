@@ -10,8 +10,8 @@ export class AuthGuard implements CanActivate {
 
   async canActivate() {
     if (this.authService.getToken()) {
-      if (this.authService.isTokenExpired())
-        this.authService.tryRefreshingTokens().subscribe();
+      // if (this.authService.isTokenExpired())
+      //   this.authService.tryRefreshingTokens().subscribe();
       return true;
     }
     this.router.navigate(['login']);
