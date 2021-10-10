@@ -5,6 +5,7 @@ using System.Security.Claims;
 using mediassistwebapi.Contracts;
 using mediassistwebapi.Entities;
 using mediassistwebapi.Entities.Models;
+using mediassistwebapi.Entities.Parameter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -50,10 +51,9 @@ namespace mediassistwebapi.Controllers
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(2);
             userContext.SaveChanges();
 
-            return Ok(new
-            {
-                Token = accessToken,
-                RefreshToken = refreshToken
+            return Ok(new TokenApiModel(){
+                AccessToken=accessToken,
+                RefreshToken=refreshToken
             });
         }
 

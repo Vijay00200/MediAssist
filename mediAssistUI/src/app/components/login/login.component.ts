@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { noop } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
-import { ApiModule } from 'src/app/services/services';
 
 @Component({
   selector: 'app-login',
@@ -34,25 +34,16 @@ export class LoginComponent implements OnInit {
 
   onLoginClick() {
     if (this.form.invalid) return;
-    this.authService.login(this.form.value).subscribe(
-      (response) => {
-        response?.data.text().then((resp) => {
-          const _resp = JSON.parse(resp);
-          this.authService.saveToken(
-            _resp.token as string,
-            _resp.refreshToken as string
-          );
-          this.router.navigate(['/']);
-        });
-      },
-      (error) => {
-        this.commonService.openSnackBar(
-          'Unable to login, please try again',
-          false
-        );
-        console.log(error);
-        this.form.reset();
-      }
+    this.authService.loginUsingCredentials(this.form.value).subscribe(
+      noop,
+      (error) => this.handleloginError(error),
+      () => this.router.navigate(['/'])
     );
+  }
+
+  handleloginError(error: any) {
+    this.commonService.openSnackBar('Unable to login, please try again', false);
+    console.log(error);
+    this.form.reset();
   }
 }

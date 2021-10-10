@@ -40,10 +40,9 @@ namespace mediassistwebapi.Controllers
             var newRefreshToken = tokenService.GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;
             userContext.SaveChanges();
-            return new ObjectResult(new
-            {
-                accessToken = newAccessToken,
-                refreshToken = newRefreshToken
+             return Ok(new TokenApiModel(){
+                AccessToken=newAccessToken,
+                RefreshToken=newRefreshToken
             });
         }
         [HttpPost, Authorize]

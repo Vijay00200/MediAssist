@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { ApiModule } from './services';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @Injectable({
@@ -76,5 +76,22 @@ export class AuthService extends ApiModule.AuthClient {
     localStorage.removeItem('jwt');
     localStorage.removeItem('refreshToken');
     this.router.navigate(['login']);
+  }
+
+  public loginUsingCredentials(
+    loginModel: ApiModule.LoginModel
+  ): Observable<void> {
+    return super.login(loginModel).pipe(
+      switchMap((val) => this.getTokenFromResponse(val!)),
+      map((val) => this.saveToken(val.accessToken!, val.refreshToken!))
+    );
+  }
+
+  public getTokenFromResponse(
+    val: ApiModule.FileResponse
+  ): Observable<ApiModule.ITokenApiModel> {
+    return from(val!.data.text()).pipe(
+      map((val) => JSON.parse(val) as ApiModule.ITokenApiModel)
+    );
   }
 }
