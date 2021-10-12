@@ -5,8 +5,9 @@ import { option, remedy } from 'src/app/custom-types';
 import { MatDictionaryValidators } from 'src/app/material/mat-dictionary/mat-dictionary.validators';
 import { ApiModule } from 'src/app/services/services';
 import { Router } from '@angular/router';
-import { SessionStorageService } from 'src/app/services/session-storage.service';
 import { CommonService } from 'src/app/services/common.service';
+import { forkJoin, iif } from 'rxjs';
+import { concatMap, first, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-remedy',
@@ -15,12 +16,12 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class RemedyComponent implements OnInit {
   form: FormGroup;
-  remedyId: number | null;
+  remedyId = 0;
   dosageId: number | undefined;
 
   medicineOptions: option[] = [];
 
-  SymptomOptions: option[] = [];
+  symptomOptions: option[] = [];
 
   private _formState!: 'INSERT' | 'UPDATE' | 'VIEW';
 
@@ -41,7 +42,7 @@ export class RemedyComponent implements OnInit {
     private commonService: CommonService
   ) {
     const _remedyId = this.route.snapshot.paramMap.get('remedyId');
-    this.remedyId = _remedyId ? +_remedyId : null;
+    this.remedyId = _remedyId ? +_remedyId : 0;
 
     if (this.remedyId) {
       this.formState = 'VIEW';
@@ -61,46 +62,58 @@ export class RemedyComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
-    this.commonService.getMedicinesOption().subscribe((medicineOptions) => {
-      this.medicineOptions = medicineOptions;
-    });
+  ngOnInit() {
+    const medicineOptions$ = this.commonService.getMedicinesOption().pipe(
+      first(),
+      map((options) => (this.medicineOptions = options))
+    );
 
-    this.commonService.getSymptomsOption().subscribe((SymptomOptions) => {
-      this.SymptomOptions = SymptomOptions;
-    });
+    const symptomOptions$ = this.commonService.getSymptomsOption().pipe(
+      first(),
+      map((options) => (this.symptomOptions = options))
+    );
 
-    this.initRemedyForm();
+    forkJoin([medicineOptions$, symptomOptions$])
+      .pipe(concatMap(() => this.initRemedyForm()))
+      .subscribe();
   }
 
   initRemedyForm() {
-    if (this.remedyId)
-      this.remedyClient.getRemedyById(this.remedyId).subscribe((resp) => {
-        const remedy: remedy = {
-          notes: resp.notes,
-          remedyId: resp.remedyId,
-          dosage: resp.dosage,
-          medicineId: resp.medicineId,
-          medicine: this.medicineOptions.find(
-            (x: option) => x.key === resp.medicineId
-          )!,
-          symptomId: resp.symptomId,
-          symptom: this.SymptomOptions.find(
-            (x: option) => x.key === resp.symptomId
-          )!,
-        };
-        this.dosageId = resp.dosage?.dosageId;
-        this.form.patchValue(remedy);
+    const getRemedyById$ = this.remedyClient.getRemedyById(this.remedyId!).pipe(
+      map((resp) => {
+        this.form.patchValue(this.initRemedyObject(resp));
         this.form.disable();
-      });
+      })
+    );
+
+    return iif(() => {
+      return this.remedyId > 0;
+    }, getRemedyById$);
+  }
+
+  initRemedyObject(resp: ApiModule.RemedyDto): remedy {
+    this.dosageId = resp.dosage?.dosageId;
+    return {
+      notes: resp.notes,
+      remedyId: resp.remedyId,
+      dosage: resp.dosage,
+      medicineId: resp.medicineId,
+      medicine: this.medicineOptions.find(
+        (x: option) => x.key === resp.medicineId
+      )!,
+      symptomId: resp.symptomId,
+      symptom: this.symptomOptions.find(
+        (x: option) => x.key === resp.symptomId
+      )!,
+    };
   }
 
   onAddSymptomOption(symptomName: string) {
     this.symptomClient.addSymptom(symptomName).subscribe((symptom) => {
       const newItem = { key: symptom.symptomId, value: symptomName };
-      this.SymptomOptions.push(newItem);
+      this.symptomOptions.push(newItem);
       this.form.controls['symptom'].setValue(newItem);
-      this.commonService.updateSymptomsOption(this.SymptomOptions);
+      this.commonService.updateSymptomsOption(this.symptomOptions);
     });
   }
 

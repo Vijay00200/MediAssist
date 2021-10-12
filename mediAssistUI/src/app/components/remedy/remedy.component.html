@@ -8,7 +8,7 @@
         <mat-label>symptom</mat-label>
         <app-mat-dictionary
           formControlName="symptom"
-          [options]="SymptomOptions"
+          [options]="symptomOptions"
           (addedOption)="onAddSymptomOption($event)"
           [required]="true"
           [disabled]="form.disabled"
@@ -60,13 +60,13 @@
       Save
     </button>
     <button
-    mat-flat-button
-    color="primary"
-    (click)="onBackClick()"
-    *ngIf="formState === 'VIEW'"
-  >
-    Back
-  </button>
+      mat-flat-button
+      color="primary"
+      (click)="onBackClick()"
+      *ngIf="formState === 'VIEW'"
+    >
+      Back
+    </button>
     <button
       mat-flat-button
       color="primary"

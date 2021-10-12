@@ -46,13 +46,6 @@ export class CommonService {
     this.sessionStorageService.setItem<option[]>('symptoms', symptomOptions);
   }
 
-  // addSymptom(symptom: option) {
-  //   let symptomOptions =
-  //     this.sessionStorageService.getItemAsValue<option[]>('symptoms')!;
-  //   symptomOptions.push(symptom);
-  //   this.updateSymptomsOption(symptomOptions);
-  // }
-
   getMedicinesOption(): Observable<option[]> {
     if (!this.sessionStorageService.getItemAsValue<option[]>('medicines')) {
       this.medicineClient
@@ -74,13 +67,6 @@ export class CommonService {
 
     return this.sessionStorageService.getItem<option[]>('medicines')!;
   }
-
-  // addMedicine(medicine: option) {
-  //   let medicineOptions =
-  //     this.sessionStorageService.getItemAsValue<option[]>('medicines')!;
-  //   medicineOptions.push(medicine);
-  //   this.updateMedicineOption(medicineOptions);
-  // }
 
   updateMedicineOption(medicineOptions: option[]) {
     this.sessionStorageService.setItem<option[]>('medicines', medicineOptions);

@@ -5,7 +5,7 @@ import { ApiModule } from './services';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @Injectable({
@@ -42,33 +42,26 @@ export class AuthService extends ApiModule.AuthClient {
     return true;
   }
 
-  tryRefreshingTokens() {
+  tryRefreshingTokens(): Observable<boolean> {
     const accessToken = this.getToken();
     const refreshToken = this.getRefreshToken();
 
-    if (!accessToken || !refreshToken) {
-      return of(false);
-    }
     const credentials = {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
+
+    if (!accessToken || !refreshToken) {
+      return of(false);
+    }
+
     return this.tokenClient
       .refresh(credentials as ApiModule.TokenApiModel)
       .pipe(
-        switchMap((response) => {
-          response?.data.text().then(
-            (resp) => {
-              const token = JSON.parse(resp);
-              this.saveToken(token?.accessToken, token?.refreshToken);
-              return of(true);
-            },
-            (err) => {
-              return of(false);
-            }
-          );
-          return of(false);
-        })
+        switchMap((val) => this.getTokenFromResponse(val!)),
+        map((val) => this.saveToken(val.accessToken!, val.refreshToken!)),
+        switchMap(() => of(true)),
+        catchError((err) => of(false))
       );
   }
 
