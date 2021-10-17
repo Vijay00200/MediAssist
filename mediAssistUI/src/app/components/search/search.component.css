@@ -11,6 +11,10 @@ mat-card-actions button {
   margin: 0 10px;
 }
 
-.serach_result_icon {
+.search_result_icon {
   height: 50px;
+}
+
+.search_result_dosage_icon {
+  height: 20px;
 }

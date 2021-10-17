@@ -30,7 +30,7 @@
         >
           <div class="col-sm-2">
             <img
-              class="serach_result_icon"
+              class="search_result_icon"
               [src]="
                 getSearchedCondition().scope === 1
                   ? '../../../assets/homeopathy.png'
@@ -39,7 +39,7 @@
             />
           </div>
           <div class="col-sm-10" style="margin-left: 5px">
-            <div mat-line>
+            <div mat-line style="white-space: pre-wrap">
               {{
                 getSearchedCondition().scope === 1
                   ? remedy.medicine.value
@@ -47,8 +47,15 @@
               }}
             </div>
             <div mat-line>
-              {{ remedy.dosage?.dosageDays }}
-              {{ remedy.dosage?.dosageTimes }}{{ remedy.dosage?.dosagePower }}
+              <!-- <img
+                class="search_result_dosage_icon"
+                src="../../../assets/medicine.png"
+              /> -->
+              <span class="ml-2">
+                P: {{ remedy.dosage?.dosagePower }} | D:
+                {{ remedy.dosage?.dosageDays }} | T:
+                {{ remedy.dosage?.dosageTimes }}
+              </span>
             </div>
           </div>
         </a>

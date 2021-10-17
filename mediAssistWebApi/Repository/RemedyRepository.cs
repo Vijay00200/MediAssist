@@ -20,10 +20,14 @@ namespace mediassistwebapi.Repository
         public PagedList<Remedy> GetAllRemedies(SearchRemedyParams searchRemedyParams)
         {
 
-            return PagedList<Remedy>.ToPagedList(FindByCondition(x => x.MedicineId == searchRemedyParams.MedicineId ||
-             x.SymptomId == searchRemedyParams.SymptomId).OrderBy(on => on.RemedyId),
-                                                    searchRemedyParams.PageNumber,
-                                                    searchRemedyParams.PageSize);
+            return PagedList<Remedy>.ToPagedList(this.RepositoryContext.Remedies
+                                                        .Where(x => x.MedicineId == searchRemedyParams.MedicineId ||
+                                                             x.SymptomId == searchRemedyParams.SymptomId)
+                                                             .Include(x=>x.Dosage)
+                                                             .OrderBy(on => on.RemedyId)
+                                                             .AsNoTracking(),
+                                                             searchRemedyParams.PageNumber,
+                                                             searchRemedyParams.PageSize);
         }
 
         public Remedy GetRemedyById(int remedyId)
