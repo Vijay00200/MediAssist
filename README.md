@@ -7,11 +7,9 @@ The UI is build using Angular,
 API is built using the Dot Net core
 
 ## Application Screen
-![This is an image](Images/1.jpeg){:height="200px" width="200px"}
 
-
-<img src=“/Images/1.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“/Images/2.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“/Images/3.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“/Images/4.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“/Images/5.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
+<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/1.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;” width="400px" hieght="800px"/>
+<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/2.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
+<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/3.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
+<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/4.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
+<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/5.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
