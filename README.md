@@ -8,8 +8,9 @@ API is built using the Dot Net core
 
 ## Application Screen
 
-<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/1.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;” width="400px" hieght="800px"/>
-<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/2.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/3.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/4.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
-<img src=“https://raw.githubusercontent.com/Vijay00200/MediAssist/master/Images/5.jpeg” raw=true alt=“screenshot” style=“margin-right: 10px;”/>
+![1](https://user-images.githubusercontent.com/34052937/147853540-8f205173-02e4-492b-8771-6a29aff1454d.png)
+![2](https://user-images.githubusercontent.com/34052937/147853545-d64f2af5-56e1-4f58-91c0-ac727a581220.png)
+![3](https://user-images.githubusercontent.com/34052937/147853551-0797c226-1e60-47c0-9a13-4fba27a3bf30.png)
+![4](https://user-images.githubusercontent.com/34052937/147853552-1592cc2f-3881-44e7-ad54-299ad6ade0b6.png)
+![5](https://user-images.githubusercontent.com/34052937/147853556-5227617d-d540-40b4-965f-250bf4729b91.png)
+
