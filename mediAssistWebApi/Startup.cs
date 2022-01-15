@@ -9,6 +9,10 @@ using mediassistwebapi.Entities;
 using mediassistwebapi.Extensions;
 using mediassistwebapi.Contracts;
 using mediassistwebapi.Util;
+using System.Collections.Generic;
+using NSwag.Generation.Processors.Security;
+using System.Linq;
+using NSwag;
 
 namespace mediAssistWebApi
 {
@@ -43,13 +47,21 @@ namespace mediAssistWebApi
             // Register the Swagger services
             services.AddSwaggerDocument(c =>
             {
-                c.Title = "mediAssistWebApi"; c.Version = "v1";
+                c.Title = "mediAssistWebApi";
+                c.Version = "v1";
+                c.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT Token"));
+                c.AddSecurity("JWT Token", Enumerable.Empty<string>(),
+                    new NSwag.OpenApiSecurityScheme()
+                    {
+                        Type = OpenApiSecuritySchemeType.ApiKey,
+                        Name = "Authorization",
+                        In = OpenApiSecurityApiKeyLocation.Header,
+                        Description = "Copy this into the value field: Bearer {token}"
+                    }
+                );
+
             });
 
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "mediAssistWebApi", Version = "v1" });
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
