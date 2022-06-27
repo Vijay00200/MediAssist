@@ -49,7 +49,8 @@ namespace mediAssistWebApi.Migrations
 
                     b.HasKey("DosageId");
 
-                    b.HasIndex("RemedyId");
+                    b.HasIndex("RemedyId")
+                        .IsUnique();
 
                     b.ToTable("Dosages");
                 });
@@ -177,8 +178,8 @@ namespace mediAssistWebApi.Migrations
             modelBuilder.Entity("mediassistwebapi.Entities.Models.Dosage", b =>
                 {
                     b.HasOne("mediassistwebapi.Entities.Models.Remedy", "Remedy")
-                        .WithMany("Dosage")
-                        .HasForeignKey("RemedyId")
+                        .WithOne("Dosage")
+                        .HasForeignKey("mediassistwebapi.Entities.Models.Dosage", "RemedyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
