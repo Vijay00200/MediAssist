@@ -23,12 +23,16 @@ import {
   NgForm,
 } from '@angular/forms';
 import {
-  CanDisableCtor,
-  CanUpdateErrorStateCtor,
   ErrorStateMatcher,
   mixinDisabled,
   mixinErrorState,
+  _Constructor,
+  _AbstractConstructor,
+  CanUpdateErrorState,
+  CanDisable
 } from '@angular/material/core';
+declare type CanUpdateErrorStateCtor = _Constructor<CanUpdateErrorState> & _AbstractConstructor<CanUpdateErrorState>;
+declare type CanDisableCtor = _Constructor<CanDisable> & _AbstractConstructor<CanDisable>;
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -123,6 +127,7 @@ export class MatDictionaryComponent
       map((item) => (item ? this.filterItems(item) : this.options.slice()))
     );
   }
+  // errorState: boolean;
 
   writeValue(obj: any): void {
     this.value = obj;
@@ -161,7 +166,7 @@ export class MatDictionaryComponent
     }
   }
   // ngControl = null;
-  // errorState = false;
+  errorState = false;
 
   filterItems(_item: string | option) {
     let _value = typeof _item === 'string' ? _item : _item?.value;
