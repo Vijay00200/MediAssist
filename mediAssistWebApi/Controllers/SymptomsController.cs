@@ -53,6 +53,25 @@ namespace mediassistwebapi.Controllers
             return _mapper.Map<SymptomDto>(symptom);
         }
 
+        [HttpPut("UpdateSymptom", Name = "UpdateSymptom")]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                    nameof(DefaultApiConventions.Update))]
+        public IActionResult UpdateSymptom([FromBody] SymptomDto symptom)
+        {
+            if (_repositoryWrapper.Symptom.FindByCondition(x => x.SymptomId == symptom.SymptomId).Count() == 1)
+            {
+                _repositoryWrapper.Symptom.Update(_mapper.Map<Symptom>(symptom));
+                _repositoryWrapper.Save();
+                return NoContent();
+
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
         [HttpDelete("DeleteSymptom/{SymptomId}", Name = "DeleteSymptom")]
         [ApiConventionMethod(typeof(DefaultApiConventions),
                      nameof(DefaultApiConventions.Delete))]
